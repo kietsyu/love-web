@@ -13,7 +13,7 @@ LETTERS_QUESTION = os.environ.get(
     "LETTERS_QUESTION",
     "Tin nhắn đầu tiên vào ngày nào? (Dạng: ngày/tháng/năm)",
 )
-LETTERS_ANSWER = os.environ.get("LETTERS_ANSWER", "29/09/2023")
+LETTERS_ANSWER = os.environ.get("LETTERS_ANSWER", "")
 
 
 PAGES = [
