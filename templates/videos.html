@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-intro page-shell">
+  <p class="eyebrow">Những thước phim</p>
+  <h1>Phát lại<br><em>những kỷ niệm.</em></h1>
+  <p class="intro-copy">Add short videos here, or embed videos hosted elsewhere.</p>
+</section>
+<section class="media-list page-shell">
+  {% for label in ["Một ngày thú vị", "Một khoảnh khắc đáng iu", "Ba năm trong 1 phút"] %}
+    <article class="video-card">
+      <div class="video-placeholder"><span>▶</span></div>
+      <div>
+        <p class="story-label">Video {{ loop.index }}</p>
+        <h2>{{ label }}</h2>
+        <p>Media placeholder — ready for your video.</p>
+      </div>
+    </article>
+  {% endfor %}
+</section>
+{% endblock %}

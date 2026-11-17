@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-intro page-shell">
+  <p class="eyebrow">Album "bạn" và "tôi"</p>
+  <h1>Những khoảnh khắc<br><em>của chúng ta.</em></h1>
+  <p class="intro-copy">Replace these spaces with your favorite photographs.</p>
+</section>
+<section class="gallery page-shell">
+  {% for label in ["Một ngày đáng nhớ", "Nơi nào đó với nhau", "Những điều nhỏ nhặt", "Chỉ có chúng ta"] %}
+    <figure class="gallery-item">
+      <div class="placeholder-media"><span>Photo {{ loop.index }}</span></div>
+      <figcaption>{{ label }}</figcaption>
+    </figure>
+  {% endfor %}
+</section>
+{% endblock %}

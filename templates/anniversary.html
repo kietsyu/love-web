@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-intro page-shell">
+  <p class="eyebrow">{{ eyebrow }}</p>
+  <h1>{{ heading }}</h1>
+  <p class="intro-copy">{{ intro }}</p>
+</section>
+
+{% if slideshow %}
+  <section class="slideshow page-shell" data-slideshow>
+    <div class="slideshow-stage">
+      {% for slide in slideshow %}
+        <figure class="slide{% if loop.first %} is-active{% endif %}">
+          <div class="slide-image">
+            <img src="{{ url_for('static', filename=slide.image) }}" alt="{{ slide.caption }}">
+            <span class="image-fallback">Thêm ảnh {{ loop.index }} vào static/{{ slide.image }}</span>
+          </div>
+          <figcaption>{{ slide.caption }}</figcaption>
+        </figure>
+      {% endfor %}
+      <button class="slideshow-control slideshow-previous" type="button" aria-label="Ảnh trước">←</button>
+      <button class="slideshow-control slideshow-next" type="button" aria-label="Ảnh tiếp theo">→</button>
+    </div>
+    <div class="slideshow-footer">
+      <span class="slide-counter" aria-live="polite">01 / {{ "%02d"|format(slideshow|length) }}</span>
+      <div class="slide-dots">
+        {% for slide in slideshow %}
+          <button class="slide-dot{% if loop.first %} is-active{% endif %}" type="button" aria-label="Mở ảnh {{ loop.index }}"></button>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <script src="{{ url_for('static', filename='js/slideshow.js') }}"></script>
+{% else %}
+  <section class="story-layout page-shell">
+    <div class="placeholder-media">
+      <span>Drop a favorite photo here</span>
+    </div>
+    <div class="story-copy">
+      <p class="story-label">{{ year }} năm</p>
+      <h2>Write this chapter in your own words.</h2>
+      <p>
+        This space is ready for dates, memories, inside jokes, and the details
+        that only the two of you understand.
+      </p>
+    </div>
+  </section>
+{% endif %}
+{% endblock %}

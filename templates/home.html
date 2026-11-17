@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero page-shell">
+  <p class="eyebrow">23 tháng 11, 2026 · kỉ niệm ba năm</p>
+  <h1>Ba năm,<br><em>chưa dừng lại...</em></h1>
+  <p class="hero-copy">
+    Một nơi yên bình để nhìn lại những địa điểm và<br>
+    khoảnh khắc đáng nhớ của chúng ta.
+  </p>
+  <a class="button" href="{{ url_for('first_anniversary') }}">Câu chuyện của chúng ta <span>→</span></a>
+</section>
+
+<section class="home-grid page-shell">
+  <a class="feature-card feature-card-dark" href="{{ url_for('photos') }}">
+    <span class="card-number">01</span>
+    <span class="card-title">Khoảnh khắc của<br>chúng ta</span>
+    <span class="card-link">Xem ảnh →</span>
+  </a>
+  <a class="feature-card feature-card-light" href="{{ url_for('letters') }}">
+    <span class="card-number">02</span>
+    <span class="card-title">Những điều<br>tôi muốn nói</span>
+    <span class="card-link">Đọc thư →</span>
+  </a>
+</section>
+{% endblock %}

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title }} · Us</title>
+    <meta name="description" content="A small archive of our years together.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="{{ url_for('home') }}" aria-label="Go to home">
+        <span class="brand-mark">+</span>
+        <span>Chúng ta</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        {% for item in pages %}
+          {% if item.endpoint != "home" %}
+            <a href="{{ item.path }}">{{ item.label }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <p>Made for the two of us.</p>
+      <span>♥</span>
+    </footer>
+  </body>
+</html>

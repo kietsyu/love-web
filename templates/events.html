@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-intro page-shell">
+  <p class="eyebrow">Our shared map</p>
+  <h1>Places that<br><em>became ours.</em></h1>
+  <p class="intro-copy">Create a timeline of concerts, trips, dates, and adventures.</p>
+</section>
+<section class="timeline page-shell">
+  {% for date, place, description in [
+    ("01", "A place to add", "Write one sentence about why this memory matters."),
+    ("02", "Another favorite place", "Add the story behind this day together."),
+    ("03", "The next adventure", "Leave room for something still to come.")
+  ] %}
+    <article class="timeline-item">
+      <span class="timeline-number">{{ date }}</span>
+      <div><h2>{{ place }}</h2><p>{{ description }}</p></div>
+    </article>
+  {% endfor %}
+</section>
+{% endblock %}

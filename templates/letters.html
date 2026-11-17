@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-intro page-shell">
+  <p class="eyebrow">Dành cho "bạn"</p>
+  <h1>Những điều<br><em>tôi muốn nói.</em></h1>
+  <p class="intro-copy">A private-feeling corner of a public little website.</p>
+</section>
+{% if letters_unlocked %}
+  <section class="letter page-shell">
+    <p class="story-label">Lá thư cho năm thứ ba</p>
+    <h2>Gửi "bạn",</h2>
+    <p>
+      Start writing here. Tell her what you remember, what you are grateful for,
+      and what you hope the next chapter brings.
+    </p>
+    <p>With love,<br>Your favorite person</p>
+  </section>
+{% else %}
+  <section class="letter-lock page-shell">
+    <div class="lock-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" role="img">
+        <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+      </svg>
+    </div>
+    <p class="story-label">A letter just for us</p>
+    <h2>Answer the question to open it.</h2>
+    <form class="unlock-form" method="post">
+      <label for="answer">{{ letters_question }}</label>
+      <div class="answer-row">
+        <input id="answer" name="answer" type="password" autocomplete="off" required autofocus>
+        <button class="button" type="submit">Unlock <span>→</span></button>
+      </div>
+      {% if error %}
+        <p class="form-error" role="alert">{{ error }}</p>
+      {% endif %}
+    </form>
+  </section>
+{% endif %}
+{% endblock %}
