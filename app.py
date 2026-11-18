@@ -42,14 +42,14 @@ def inject_navigation():
 
 @app.route("/")
 def home():
-    return render_template("home.html", page_title="Three years, and counting")
+    return render_template("home.html", page_title="Home")
 
 
 @app.route("/first-anniversary")
 def first_anniversary():
     return render_template(
         "anniversary.html",
-        page_title="Our first anniversary",
+        page_title="Year One",
         eyebrow="Chương một",
         heading="The beginning of everything",
         intro="Add the story of your first year together here.",
@@ -61,7 +61,7 @@ def first_anniversary():
 def second_anniversary():
     return render_template(
         "anniversary.html",
-        page_title="Our second anniversary",
+        page_title="Year Two",
         eyebrow="Chương hai",
         heading="Hai năm của chúng ta",
         intro="Một vài khoảnh khắc đẹp nhất của năm thứ hai.",
@@ -163,17 +163,17 @@ def second_anniversary():
 
 @app.route("/photos")
 def photos():
-    return render_template("photos.html", page_title="Our photos")
+    return render_template("photos.html", page_title="Captured")
 
 
 @app.route("/videos")
 def videos():
-    return render_template("videos.html", page_title="Our videos")
+    return render_template("videos.html", page_title="Replaying")
 
 
 @app.route("/events")
 def events():
-    return render_template("events.html", page_title="Places we have been")
+    return render_template("events.html", page_title="Places")
 
 
 @app.route("/letters", methods=["GET", "POST"])
@@ -191,7 +191,7 @@ def letters():
 
     return render_template(
         "letters.html",
-        page_title="Letters and thoughts",
+        page_title="Letters",
         letters_unlocked=session.get("letters_unlocked", False),
         letters_question=LETTERS_QUESTION,
         error=error,
