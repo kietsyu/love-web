@@ -47,118 +47,59 @@ def home():
 
 @app.route("/first-anniversary")
 def first_anniversary():
+    custom_positions = {
+        1: "center 20%",
+        2: "center 20%",
+        3: "center 55%",
+        7: "center 65%",
+        12: "right",
+        17: "center 25%",
+    }
+    first_year_gallery = [
+        {
+            "image": f"img/anni1/{i}.jpg",
+            "caption": "",
+            "position": custom_positions.get(i, "center")
+        }
+        for i in range(1, 21)
+    ]
+
     return render_template(
         "anniversary.html",
         page_title="Year One",
-        eyebrow="Chương một",
-        heading="The beginning of everything",
-        intro="Add the story of your first year together here.",
+        eyebrow="Chương một • 23/11/2024",
+        heading="Sự khởi đầu",
+        intro="Một năm trôi qua cùng nhiều cuộc cãi vã về những điều nhỏ nhặt nhưng cũng có rất nhiều khoảnh khắc vui vẻ đã được ghi lại.",
         year="Một",
+        gallery=first_year_gallery,
     )
 
 
 @app.route("/second-anniversary")
 def second_anniversary():
+    second_year_letter = { #type: ignore
+        "label": "Thư • Kỷ niệm 2 năm",
+        "heading": "Hai năm trôi qua thật nhanh",
+        "paragraphs": [
+            """cảm ơn bé vì đã luôn kéo anh khỏi những điều xấu xa của cuộc sống và luôn bên cạnh anh những lúc khó khăn. anh luôn ghi nhớ những giây phút được ở bên bé. anh biết là mình vẫn còn nhiều lần vụng về trong lúc mình ở bên nhau, nhưng bé hãy nhớ rằng anh luôn luôn yêu thương và trân trọng bé. đôi khi anh có lỡ lời hay làm gì có lỗi, đừng vội trách cứ và dỗi hờn anh nhé. điều anh mong muốn nhất là tình yêu này được bền lâu và anh sẽ  luôn bảo vệ nó. anh sẽ cố gắng để sau này, dù kết quả ra sao thì khi nhìn lại, chúng ta vẫn sẽ thấy tình yêu này thật đẹp đẽ và đáng trân quý.""",
+        ],
+        "signature": "iu,",
+    }
+
     return render_template(
         "anniversary.html",
         page_title="Year Two",
-        eyebrow="Chương hai",
-        heading="Hai năm của chúng ta",
-        intro="Một vài khoảnh khắc đẹp nhất của năm thứ hai.",
+        eyebrow="Chương hai • 23/11/2025",
+        heading="Năm thứ hai của chúng ta",
+        intro="Trải qua một năm học cách yêu, chúng ta đã nhận ra nhiều điều, từ những sai sót của bản thân, những điều nên làm, cũng như hiểu hơn về con người của bạn đồng hành. Để rồi từ đó, ta bước qua năm thứ hai với sự trưởng thành hơn rất nhiều so với những ngày đầu tiên.",
         year="Hai",
         slideshow=[
-            {
-                "image": "img/anni2/1.jpg",
-            },
-            {
-                "image": "img/anni2/2.jpg",
-            },
-            {
-                "image": "img/anni2/3.jpg",
-            },
-            {
-                "image": "img/anni2/4.jpg",
-            },
-            {
-                "image": "img/anni2/5.jpg",
-            },
-            {
-                "image": "img/anni2/6.jpg",
-            },
-            {
-                "image": "img/anni2/7.jpg",
-            },
-            {
-                "image": "img/anni2/8.jpg",
-            },
-            {
-                "image": "img/anni2/9.jpg",
-            },
-            {
-                "image": "img/anni2/10.jpg",
-            },
-            {
-                "image": "img/anni2/11.jpg",
-            },
-            {
-                "image": "img/anni2/12.jpg",
-            },
-            {
-                "image": "img/anni2/13.jpg",
-            },
-            {
-                "image": "img/anni2/14.jpg",
-            },
-            {
-                "image": "img/anni2/15.jpg",
-            },
-            {
-                "image": "img/anni2/16.jpg",
-            },
-            {
-                "image": "img/anni2/17.jpg",
-            },
-            {
-                "image": "img/anni2/18.jpg",
-            },
-            {
-                "image": "img/anni2/19.jpg",
-            },
-            {
-                "image": "img/anni2/20.jpg",
-            },
-            {
-                "image": "img/anni2/21.jpg",
-            },
-            {
-                "image": "img/anni2/22.jpg",
-            },
-            {
-                "image": "img/anni2/23.jpg",
-            },
-            {
-                "image": "img/anni2/24.jpg",
-            },
-            {
-                "image": "img/anni2/25.jpg",
-            },
-            {
-                "image": "img/anni2/26.jpg",
-            },
-            {
-                "image": "img/anni2/27.jpg",
-            },
-            {
-                "image": "img/anni2/28.jpg",
-            },
-            {
-                "image": "img/anni2/29.jpg",
-            },
-            {
-                "image": "img/anni2/30.jpg",
-            },
+            {"image": f"img/anni2/{i}.jpg"}
+            for i in range(1, 31)
         ],
+        letter=second_year_letter,
     )
+
 
 
 @app.route("/photos")

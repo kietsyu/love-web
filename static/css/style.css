@@ -1,11 +1,11 @@
 :root {
-  --ink: #1d2421;
-  --muted: #68716c;
-  --paper: #f4f2ed;
-  --cream: #e8e4da;
-  --sage: #c7d0c4;
-  --dark: #29332e;
-  --line: rgba(29, 36, 33, 0.14);
+  --ink: #1a2430;
+  --muted: #606f80;
+  --paper: #f5f7f9;
+  --cream: #e5ebf0;
+  --sage: #bfd0de;
+  --dark: #25364a;
+  --line: rgba(26, 36, 48, 0.14);
 }
 
 * { box-sizing: border-box; }
@@ -21,25 +21,26 @@ a { color: inherit; text-decoration: none; }
 
 .site-header {
   align-items: center;
+  background: var(--sage);
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
-  max-width: 1240px;
+  max-width: 1540px;
   padding: 28px 5vw;
 }
 
 .brand { align-items: center; display: flex; font-size: .82rem; font-weight: 700; gap: 10px; letter-spacing: .08em; text-transform: uppercase; }
-.brand-mark { align-items: center; background: var(--ink); border-radius: 50%; color: var(--paper); display: inline-flex; height: 24px; justify-content: center; width: 24px; }
+.brand-mark svg { align-items: center; border-radius: 50%; color: var(--paper); display: inline-flex; height: 30px; justify-content: center; width: 30    px; }
 .site-nav { display: flex; flex-wrap: wrap; gap: 22px; }
 .site-nav a { color: var(--muted); font-size: .78rem; }
 .site-nav a:hover { color: var(--ink); }
-.page-shell { margin: 0 auto; max-width: 1040px; padding-left: 5vw; padding-right: 5vw; }
+.page-shell { margin: 0 auto; max-width: 1040px; padding-left: 3vw; padding-right: 5vw; }
 .hero { padding-bottom: 110px; padding-top: 110px; }
 .eyebrow, .story-label { color: var(--muted); font-size: .72rem; font-weight: 700; letter-spacing: .14em; margin: 0 0 24px; text-transform: uppercase; }
 h1, h2 { font-family: "Playfair Display", serif; font-weight: 500; }
 h1 { font-size: clamp(3.8rem, 9vw, 8rem); letter-spacing: -.06em; line-height: .9; margin: 0; max-width: 900px; }
 h1 em { color: var(--muted); font-style: normal; }
-.hero-copy, .intro-copy { color: var(--muted); font-size: 1.05rem; line-height: 1.7; margin: 34px 0; max-width: 440px; }
+.hero-copy, .intro-copy { color: var(--muted); font-size: 1.05rem; line-height: 1.7; margin: 34px 0; max-width: 540px; }
 .button { border-bottom: 1px solid var(--ink); display: inline-flex; font-size: .82rem; font-weight: 700; gap: 20px; padding-bottom: 8px; }
 .button span { transition: transform .2s; }
 .button:hover span { transform: translateX(5px); }
@@ -51,17 +52,37 @@ h1 em { color: var(--muted); font-style: normal; }
 .card-number { font-size: .72rem; opacity: .7; }
 .card-title { font-family: "Playfair Display", serif; font-size: 2.4rem; line-height: 1; margin-top: auto; }
 .card-link { font-size: .75rem; margin-top: 24px; }
-.site-footer { align-items: center; border-top: 1px solid var(--line); display: flex; justify-content: space-between; margin: 0 auto; max-width: 1040px; padding: 24px 5vw 40px; }
+.site-footer { align-items: center; background: var(--sage); border-top: 1px solid var(--line); display: flex; justify-content: space-between; margin: 0 auto; max-width: 1540px; padding: 24px 5vw 40px; }
 .site-footer p { color: var(--muted); font-size: .72rem; margin: 0; }
 .site-footer span { font-size: 1.2rem; }
 .page-intro { padding-bottom: 80px; padding-top: 90px; }
 .page-intro h1 { font-size: clamp(3.4rem, 8vw, 6.8rem); }
-.story-layout { align-items: center; display: grid; gap: 8vw; grid-template-columns: 1.2fr 1fr; padding-bottom: 110px; }
-.placeholder-media, .video-placeholder { align-items: center; background: var(--cream); color: var(--muted); display: flex; justify-content: center; min-height: 390px; }
+.story-layout {
+  align-items: center;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 8vw;
+  grid-template-columns: 1.2fr 1fr;
+  margin: 0 auto;
+  max-width: 1040px;
+  padding: 72px 24px 110px;
+}
+.placeholder-media, .video-placeholder { align-items: center; background: var(--cream); color: var(--muted); display: flex; justify-content: center; min-height: 390px; overflow: hidden; position: relative;}
+.placeholder-media img {
+  display: block;
+  height: 100%;
+  left: 0;
+  object-fit: cover;
+  object-position: center; /* Change to "top" or "center 20%" if needed */
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
 .placeholder-media span { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
 .story-copy h2, .video-card h2, .timeline-item h2 { font-size: 2.2rem; line-height: 1.05; margin: 0 0 18px; }
 .story-copy p, .video-card p, .timeline-item p, .letter p { color: var(--muted); line-height: 1.7; }
-.slideshow { padding-bottom: 110px; }
+.slideshow {border-top: 1px solid var(--line); padding-bottom: 110px; padding-top: 72px}
 .slideshow-stage { position: relative; touch-action: pan-y; }
 .slide { display: none; margin: 0; }
 .slide.is-active { display: block; }
@@ -125,4 +146,182 @@ figcaption { font-size: .8rem; padding-top: 13px; }
   .video-placeholder { min-height: 220px; }
   .answer-row { align-items: stretch; flex-direction: column; gap: 12px; }
   .answer-row .button { align-self: flex-start; }
+}
+
+.side-frame {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 170px;
+  z-index: 5;
+}
+
+.side-frame-left {
+  left: 24px;
+  transform: translateY(-50%) rotate(-1.5deg);
+}
+
+.side-frame-right {
+  right: 24px;
+  transform: translateY(-50%) rotate(1.5deg);
+}
+
+.side-frame-inner {
+  align-items: center;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 30px rgba(26, 36, 48, 0.08);
+  color: var(--muted);
+  display: flex;
+  height: 240px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.side-frame-inner span {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.side-frame-inner img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+}
+
+/* Hide side frames on smaller screens so they never overlap main text */
+@media (max-width: 1480px) {
+  .side-frame {
+    display: none;
+  }
+}
+
+/* First-Anniversary 20-Photo Editorial Gallery */
+.year-gallery-section {
+  border-top: 1px solid var(--line);
+  margin: 0 auto;
+  max-width: 1040px; /* Pulls the gallery and its title inward */
+  padding: 72px 24px 110px;
+}
+
+.year-gallery-header {
+  margin-bottom: 40px;
+}
+
+.year-gallery-header h2 {
+  font-size: 2.2rem;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.editorial-gallery {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.editorial-card {
+  margin: 0;
+}
+
+/* Repeating 5-photo editorial rhythm (4 cycles = 20 photos) */
+.editorial-card:nth-child(10n + 1) { grid-column: span 7; }
+.editorial-card:nth-child(10n + 2) { grid-column: span 5; }
+.editorial-card:nth-child(10n + 3),
+.editorial-card:nth-child(10n + 4),
+.editorial-card:nth-child(10n + 5) { grid-column: span 4; }
+.editorial-card:nth-child(10n + 6) { grid-column: span 5; }
+.editorial-card:nth-child(10n + 7) { grid-column: span 7; }
+.editorial-card:nth-child(10n + 8),
+.editorial-card:nth-child(10n + 9),
+.editorial-card:nth-child(10n + 10) { grid-column: span 4; }
+
+.editorial-frame {
+  align-items: center;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  display: flex;
+  height: 300px;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* Slightly taller frames on the 3-column rows for visual variety */
+.editorial-card:nth-child(10n + 3) .editorial-frame,
+.editorial-card:nth-child(10n + 4) .editorial-frame,
+.editorial-card:nth-child(10n + 5) .editorial-frame,
+.editorial-card:nth-child(10n + 8) .editorial-frame,
+.editorial-card:nth-child(10n + 9) .editorial-frame,
+.editorial-card:nth-child(10n + 10) .editorial-frame {
+  height: 330px;
+}
+
+.editorial-frame span {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.editorial-frame img {
+  display: block;
+  height: 100%;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  transition: transform .35s ease;
+  width: 100%;
+  z-index: 2;
+}
+
+.editorial-card:hover .editorial-frame img {
+  transform: scale(1.03);
+}
+
+@media (max-width: 700px) {
+  .editorial-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .editorial-card:nth-child(n) {
+    grid-column: span 1;
+  }
+
+  .editorial-frame,
+  .editorial-card:nth-child(n) .editorial-frame {
+    height: 220px;
+  }
+}
+
+/* Second-Anniversary Letter Card */
+.year-letter {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(28px, 6vw, 64px);
+  padding-right: clamp(28px, 6vw, 64px);
+}
+
+.letter-signature {
+  color: var(--ink) !important;
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  margin-top: 32px;
+}
+
+.letter-content-anni2 {
+  font-family: "Plus Jakarta Sans";
+  font-size: large;
 }

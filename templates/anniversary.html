@@ -3,7 +3,7 @@
 {% block content %}
 <section class="page-intro page-shell">
   <p class="eyebrow">{{ eyebrow }}</p>
-  <h1>{{ heading }}</h1>
+  <h1 style="font-size: 80px">{{ heading }}</h1>
   <p class="intro-copy">{{ intro }}</p>
 </section>
 
@@ -35,16 +35,60 @@
 {% else %}
   <section class="story-layout page-shell">
     <div class="placeholder-media">
-      <span>Drop a favorite photo here</span>
+      <img src="{{ url_for('static', filename='img/anni1/fav.jpg') }}" alt="Photo of the first" loading="lazy">
     </div>
     <div class="story-copy">
-      <p class="story-label">{{ year }} năm</p>
-      <h2>Write this chapter in your own words.</h2>
+      <p class="story-label">đẹp</p>
+      <h2>"Năm nhất"</h2>
       <p>
-        This space is ready for dates, memories, inside jokes, and the details
-        that only the two of you understand.
+        Năm đầu tiên bên nhau là một quãng thời gian vô cùng thú vị.
+        Đây là một hành trình rất đẹp nhưng cũng đầy những cuộc cãi vã
+        để thử thách tình yêu của chúng ta. Điều quan trọng là chúng ta
+        đã không bỏ cuộc mà luôn tìm cách để giải quyết mọi mâu thuẫn và
+        vượt qua một năm đó.
       </p>
     </div>
   </section>
+
+  {% if gallery %}
+    <section class="year-gallery-section" aria-label="First year photo gallery">
+      <div class="year-gallery-header">
+        <p class="story-label">Bộ sưu tập • 20 khoảnh khắc</p>
+        <h2 style="margin-bottom: 60px">Những mảnh ghép năm đầu</h2>
+      </div>
+
+      <div class="editorial-gallery">
+        {% for photo in gallery %}
+          <figure class="editorial-card">
+            <div class="editorial-frame">
+              <span>Ảnh {{ "%02d"|format(loop.index) }}</span>
+              <!-- Uncomment the line below once you add images to static/img/anni1/ -->
+              <img src="{{ url_for('static', filename=photo.image) }}" alt="Memory {{ loop.index }}" loading="lazy" style="object-position: {{ photo.position }};">
+            </div>
+            {% if photo.caption %}
+              <figcaption>{{ photo.caption }}</figcaption>
+            {% endif %}
+          </figure>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+{% endif %}
+
+{% if letter %}
+  <div class="page-shell">
+    <section class="letter year-letter" aria-label="Anniversary letter">
+      <p class="story-label">{{ letter.label }}</p>
+      <h2>{{ letter.heading }}</h2>
+
+      {% for paragraph in letter.paragraphs %}
+        <p class="letter-content-anni2">{{ paragraph }}</p>
+      {% endfor %}
+
+      {% if letter.signature %}
+        <p class="letter-signature">{{ letter.signature }}</p>
+      {% endif %}
+    </section>
+  </div>
 {% endif %}
 {% endblock %}
