@@ -81,7 +81,7 @@ def second_anniversary():
         "label": "Thư • Kỷ niệm 2 năm",
         "heading": "Hai năm trôi qua thật nhanh",
         "paragraphs": [
-            """cảm ơn bé vì đã luôn kéo anh khỏi những điều xấu xa của cuộc sống và luôn bên cạnh anh những lúc khó khăn. anh luôn ghi nhớ những giây phút được ở bên bé. anh biết là mình vẫn còn nhiều lần vụng về trong lúc mình ở bên nhau, nhưng bé hãy nhớ rằng anh luôn luôn yêu thương và trân trọng bé. đôi khi anh có lỡ lời hay làm gì có lỗi, đừng vội trách cứ và dỗi hờn anh nhé. điều anh mong muốn nhất là tình yêu này được bền lâu và anh sẽ  luôn bảo vệ nó. anh sẽ cố gắng để sau này, dù kết quả ra sao thì khi nhìn lại, chúng ta vẫn sẽ thấy tình yêu này thật đẹp đẽ và đáng trân quý.""",
+            """Cảm ơn bé vì đã luôn kéo anh khỏi những điều xấu xa của cuộc sống và luôn bên cạnh anh những lúc khó khăn. Anh luôn ghi nhớ những giây phút được ở bên bé. Anh biết là mình vẫn còn nhiều lần vụng về trong lúc mình ở bên nhau, nhưng bé hãy nhớ rằng anh luôn luôn yêu thương và trân trọng bé. Đôi khi anh có lỡ lời hay làm gì có lỗi, đừng vội trách cứ và dỗi hờn anh nhé. Điều anh mong muốn nhất là tình yêu này được bền lâu và anh sẽ luôn bảo vệ nó. Anh sẽ cố gắng để sau này, dù kết quả ra sao thì khi nhìn lại, chúng ta vẫn sẽ thấy tình yêu này thật đẹp đẽ và đáng trân quý.""",
         ],
         "signature": "iu,",
     }
@@ -101,10 +101,30 @@ def second_anniversary():
     )
 
 
-
 @app.route("/photos")
 def photos():
-    return render_template("photos.html", page_title="Captured")
+    # Optional: Add captions for specific photo numbers; others will simply show without text
+    custom_captions = {
+        1: "Một ngày đáng nhớ",
+        2: "Nơi nào đó với nhau",
+        3: "Những điều nhỏ nhặt",
+        4: "Chỉ có chúng ta",
+    }
+
+    photo_items = [
+        {
+            "image": f"img/photos/{i}.jpg",
+            "caption": custom_captions.get(i, ""),
+        }
+        for i in range(1, 65)
+    ]
+
+    return render_template(
+        "photos.html",
+        page_title="Photos",
+        photos=photo_items,
+        dropbox_url="https://www.dropbox.com/scl/fo/5t5pp6qhoexh7uk2hpdsk/ALILOQJULb6CNrOftuKyLYg?rlkey=1zj1913h1fl48874z09m8rtuu&st=t3pxredn&dl=0",  # Replace with your real Dropbox link
+    )
 
 
 @app.route("/videos")

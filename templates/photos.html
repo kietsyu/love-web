@@ -3,15 +3,67 @@
 {% block content %}
 <section class="page-intro page-shell">
   <p class="eyebrow">Album "bạn" và "tôi"</p>
-  <h1>Những khoảnh khắc<br><em>của chúng ta.</em></h1>
-  <p class="intro-copy">Replace these spaces with your favorite photographs.</p>
+  <h1>Những khoảnh khắc <em>của chúng ta.</em></h1>
+  <p class="intro-copy">
+    Một góc nhỏ lưu giữ 64 tấm ảnh tiêu biểu của hai đứa — kéo xuống cuối trang nếu muốn xem trọn bộ nhé.
+  </p>
 </section>
-<section class="gallery page-shell">
-  {% for label in ["Một ngày đáng nhớ", "Nơi nào đó với nhau", "Những điều nhỏ nhặt", "Chỉ có chúng ta"] %}
-    <figure class="gallery-item">
-      <div class="placeholder-media"><span>Photo {{ loop.index }}</span></div>
-      <figcaption>{{ label }}</figcaption>
+
+<section class="gallery page-shell" aria-label="Shared photo archive">
+  {% for item in photos %}
+    <figure class="gallery-item polaroid-item">
+      <div class="placeholder-media polaroid-media"
+           data-lightbox-src="{{ url_for('static', filename=item.image) }}"
+           data-lightbox-caption="{{ item.caption or 'Khoảnh khắc #' ~ '%02d'|format(loop.index) }}">
+        <span class="print-index">No. {{ "%02d"|format(loop.index) }}</span>
+        <img
+          src="{{ url_for('static', filename=item.image) }}"
+          alt="{{ item.caption or 'Photo ' ~ loop.index }}"
+          loading="lazy"
+        >
+      </div>
+      {% if item.caption %}
+        <figcaption>{{ item.caption }}</figcaption>
+      {% endif %}
     </figure>
   {% endfor %}
 </section>
+
+<!-- "Tất tần tật" Dropbox QR Code Section -->
+<section class="dropbox-qr-section page-shell" aria-label="Full Dropbox photo archive">
+  <div class="dropbox-qr-card">
+    <div class="qr-polaroid-frame">
+      <div class="qr-image-box">
+        <span>Thêm ảnh QR vào static/img/dropbox-qr.png</span>
+        <img src="{{ url_for('static', filename='img/dropbox-qr.png') }}" alt="QR code mở thư mục ảnh Dropbox">
+      </div>
+      <p class="qr-tag">Scan me ♥</p>
+    </div>
+
+    <div class="dropbox-qr-copy">
+      <p class="story-label">Kho lưu trữ đầy đủ</p>
+      <h2>tất tần tật</h2>
+      <p>
+        Vì có quá nhiều ảnh nên trang web này chỉ trưng bày một phần nhỏ thôi. Quét mã QR bên cạnh (hoặc bấm vào nút bên dưới) để mở toàn bộ thư mục của chúng ta nhé!
+      </p>
+      {% if dropbox_url %}
+        <a class="button" href="{{ dropbox_url }}" target="_blank" rel="noopener noreferrer">
+          Mở thư mục<span>→</span>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Full-Size Photo Lightbox -->
+<div class="gallery-lightbox" id="gallery-lightbox" aria-hidden="true" role="dialog">
+  <button class="lightbox-close" type="button" aria-label="Đóng ảnh">✕</button>
+  <button class="lightbox-nav lightbox-prev" type="button" aria-label="Ảnh trước">←</button>
+  <figure class="lightbox-figure">
+    <img id="lightbox-img" src="" alt="">
+    <figcaption id="lightbox-caption"></figcaption>
+  </figure>
+  <button class="lightbox-nav lightbox-next" type="button" aria-label="Ảnh tiếp theo">→</button>
+</div>
+<script src="{{ url_for('static', filename='js/gallery-lightbox.js') }}" defer></script>
 {% endblock %}
