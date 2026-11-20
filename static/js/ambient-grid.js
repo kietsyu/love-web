@@ -13,9 +13,9 @@
   const CONFIG = {
     spacing: isLowPower ? 28 : 22,         // Distance between dots (px)
     dotRadius: 1.6,                        // Base size of each dot (px)
-    dotColor: "rgba(37, 54, 74, 0.42)",    // Coastal Blue ink tone
+    dotColor: "rgba(37, 54, 74, 0.42)",    // Coastal Blue ink tone (light mode)
     sparkleCount: isLowPower ? 14 : 22,    // Number of floating sparkles
-    sparkleColor: "rgba(37, 54, 74, 1)",   // Sparkle ink color
+    sparkleColor: "rgba(37, 54, 74, 1)",   // Sparkle ink color (light mode)
     sparkleGlyphs: ["✦", "✧", "·"],        // Sparkle characters
     repelRadius: 230,                      // Direct cursor push zone (px)
     repelStrength: 14,                     // Direct cursor push distance (px)
@@ -158,6 +158,11 @@
     ctx.clearRect(0, 0, width, height);
     const t = time * CONFIG.waveSpeed;
 
+    // Automatically switch dot & sparkle colors for Dark Mode
+    const isDark = document.documentElement.dataset.theme === "dark";
+    const activeDotColor = isDark ? "rgba(191, 208, 222, 0.5)" : CONFIG.dotColor;
+    const activeSparkleColor = isDark ? "rgba(255, 255, 255, 0.85)" : CONFIG.sparkleColor;
+
     // Advance & prune ripples
     for (let k = ripples.length - 1; k >= 0; k--) {
       ripples[k].radius += CONFIG.rippleSpeed;
@@ -167,7 +172,7 @@
     }
 
     // --- 1. Render Interactive Water-Wave Dots ---
-    ctx.fillStyle = CONFIG.dotColor;
+    ctx.fillStyle = activeDotColor;
     for (let i = 0; i < dots.length; i++) {
       const dot = dots[i];
       let targetX = dot.homeX;
@@ -203,7 +208,6 @@
         s.baseY -= s.speedY;
         s.rotation += s.rotSpeed;
 
-        // Respawn smoothly at bottom when floating past top edge
         if (s.baseY < -30) {
           Object.assign(s, createSparkle(false));
         }
@@ -212,7 +216,6 @@
       const naturalX = s.baseX + Math.sin(time * s.swayFreq + s.phase) * s.swayAmp;
       const naturalY = s.baseY;
 
-      // Apply 1.35x cursor push & ripple force so lightweight sparkles dance even more visibly
       const { pushX, pushY } = getInteractiveOffset(naturalX, naturalY, 1.35);
       s.offsetX += (pushX - s.offsetX) * CONFIG.springEase;
       s.offsetY += (pushY - s.offsetY) * CONFIG.springEase;
@@ -220,13 +223,12 @@
       s.x = naturalX + s.offsetX;
       s.y = naturalY + s.offsetY;
 
-      // Fade in near bottom and fade out near top
       const edgeFade = Math.min(1, Math.max(0, (height - s.y) / 120))
                      * Math.min(1, Math.max(0, (s.y + 20) / 120));
 
       ctx.save();
       ctx.globalAlpha = s.maxAlpha * edgeFade;
-      ctx.fillStyle = CONFIG.sparkleColor;
+      ctx.fillStyle = activeSparkleColor;
       ctx.font = `${s.size}px "Be Vietnam Pro", sans-serif`;
       ctx.translate(s.x, s.y);
       ctx.rotate(s.rotation);
