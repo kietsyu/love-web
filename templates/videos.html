@@ -2,20 +2,84 @@
 
 {% block content %}
 <section class="page-intro page-shell">
-  <p class="eyebrow">Những thước phim</p>
-  <h1>Phát lại<br><em>những kỷ niệm.</em></h1>
-  <p class="intro-copy">Add short videos here, or embed videos hosted elsewhere.</p>
+  <p class="eyebrow">Thước phim kỷ niệm • {{ total_count }} videos</p>
+  <h1>Những khoảnh khắc <em>chuyển động.</em></h1>
+  <p class="intro-copy">
+    Những đoạn video nhỏ ghi lại tiếng cười, giọng nói và những ngày bình yên bên nhau.
+  </p>
 </section>
-<section class="media-list page-shell">
-  {% for label in ["Một ngày thú vị", "Một khoảnh khắc đáng iu", "Ba năm trong 1 phút"] %}
-    <article class="video-card">
-      <div class="video-placeholder"><span>▶</span></div>
-      <div>
-        <p class="story-label">Video {{ loop.index }}</p>
-        <h2>{{ label }}</h2>
-        <p>Media placeholder — ready for your video.</p>
-      </div>
-    </article>
-  {% endfor %}
-</section>
+
+<!-- 1. Widescreen 16:9 Shelf (if you have horizontal videos) -->
+{% if horizontal_videos %}
+  <section class="yt-section page-shell" aria-label="Widescreen videos">
+    <div class="yt-section-header">
+      <span class="yt-badge-icon" aria-hidden="true">▶</span>
+      <h2>YouTube=)))</h2>
+      <span class="yt-count">{{ horizontal_videos|length }}</span>
+    </div>
+
+    <div class="yt-grid-wide">
+      {% for video in horizontal_videos %}
+        <article class="yt-card yt-card-wide">
+          <div class="video-stage yt-thumb-wide"
+               data-video-type="{{ video.type }}"
+               data-video-src="{{ video.src }}"
+               role="button"
+               tabindex="0"
+               aria-label="Phát video: {{ video.title }}">
+            <img class="video-poster"
+                 src="{{ video.poster if video.poster.startswith('http') else url_for('static', filename=video.poster) }}"
+                 alt="{{ video.title }}"
+                 loading="lazy">
+            <span class="video-play-btn" aria-hidden="true">▶</span>
+            <span class="yt-pill-tag">{{ video.number }}</span>
+          </div>
+
+          <div class="yt-meta">
+            <h3>{{ video.title }}</h3>
+            <p class="yt-sub">{{ video.date }}{% if video.description %} • {{ video.description }}{% endif %}</p>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+<!-- 2. Vertical 9:16 YouTube Shorts Shelf (for your 20+ phone clips) -->
+{% if vertical_videos %}
+  <section class="yt-section page-shell" aria-label="Vertical short clips">
+    <div class="yt-section-header">
+      <span class="yt-badge-icon yt-shorts-icon" aria-hidden="true">⚡</span>
+      <h2>YouTube Shorts=)))</h2>
+      <span class="yt-count">{{ vertical_videos|length }}</span>
+    </div>
+
+    <div class="yt-grid-shorts">
+      {% for video in vertical_videos %}
+        <article class="yt-card yt-card-short">
+          <div class="video-stage yt-thumb-short"
+               data-video-type="{{ video.type }}"
+               data-video-src="{{ video.src }}"
+               role="button"
+               tabindex="0"
+               aria-label="Phát video: {{ video.title }}">
+            <img class="video-poster"
+                 src="{{ video.poster if video.poster.startswith('http') else url_for('static', filename=video.poster) }}"
+                 alt="{{ video.title }}"
+                 loading="lazy">
+            <span class="video-play-btn" aria-hidden="true">▶</span>
+            <span class="yt-pill-tag">{{ video.number }}</span>
+          </div>
+
+          <div class="yt-meta">
+            <h3>{{ video.title }}</h3>
+            <p class="yt-sub">{{ video.date }}{% if video.description %} • {{ video.description }}{% endif %}</p>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/video-player.js') }}" defer></script>
 {% endblock %}

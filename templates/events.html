@@ -2,19 +2,40 @@
 
 {% block content %}
 <section class="page-intro page-shell">
-  <p class="eyebrow">Our shared map</p>
-  <h1>Places that<br><em>became ours.</em></h1>
-  <p class="intro-copy">Create a timeline of concerts, trips, dates, and adventures.</p>
+  <p class="eyebrow">Địa điểm quen thuộc</p>
+  <h1>Nơi chúng ta <br><em>đã đi qua</em></h1>
+  <p class="intro-copy">
+    Những tọa độ đáng nhớ nhất trong hành trình của hai đứa.
+  </p>
 </section>
-<section class="timeline page-shell">
-  {% for date, place, description in [
-    ("01", "A place to add", "Write one sentence about why this memory matters."),
-    ("02", "Another favorite place", "Add the story behind this day together."),
-    ("03", "The next adventure", "Leave room for something still to come.")
-  ] %}
+
+<section class="timeline page-shell" aria-label="Our timeline and places">
+  {% for item in milestones %}
     <article class="timeline-item">
-      <span class="timeline-number">{{ date }}</span>
-      <div><h2>{{ place }}</h2><p>{{ description }}</p></div>
+      <div class="timeline-marker">
+        <span class="timeline-number">{{ item.number }}</span>
+        <span class="timeline-dot" aria-hidden="true"></span>
+      </div>
+
+      <div class="timeline-card">
+        <div class="timeline-copy">
+          <div class="timeline-meta">
+            <span class="timeline-location">📍 {{ item.location }}</span>
+          </div>
+          <h2>{{ item.title }}</h2>
+        </div>
+
+        {% if item.image %}
+          <div class="timeline-polaroid"
+               data-lightbox-src="{{ url_for('static', filename=item.image) }}"
+               data-lightbox-caption="{{ item.title }} ({{ item.date }})">
+            <div class="timeline-photo-box">
+              <span>Thêm ảnh vào static/{{ item.image }}</span>
+              <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.title }}" loading="lazy">
+            </div>
+          </div>
+        {% endif %}
+      </div>
     </article>
   {% endfor %}
 </section>

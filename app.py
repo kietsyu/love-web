@@ -1,7 +1,8 @@
 import hmac
 import os
 
-from flask import Flask, render_template, request, session
+from static.tools.get_title import get_title
+from flask import Flask, jsonify, render_template, request, session
 
 app = Flask(__name__)
 app.secret_key = os.environ.get(
@@ -13,7 +14,8 @@ LETTERS_QUESTION = os.environ.get(
     "LETTERS_QUESTION",
     "Tin nhắn đầu tiên vào ngày nào? (Dạng: ngày/tháng/năm)",
 )
-LETTERS_ANSWER = os.environ.get("LETTERS_ANSWER", "")
+#LETTERS_ANSWER = os.environ.get("LETTERS_ANSWER", "")
+LETTERS_ANSWER = "0000"
 
 
 PAGES = [
@@ -28,10 +30,10 @@ PAGES = [
         "label": "Hai Năm",
         "path": "/second-anniversary",
     },
-    {"endpoint": "photos", "label": "Photos", "path": "/photos"},
+    {"endpoint": "photos", "label": "Ảnh", "path": "/photos"},
     {"endpoint": "videos", "label": "Videos", "path": "/videos"},
-    {"endpoint": "events", "label": "Events", "path": "/events"},
-    {"endpoint": "letters", "label": "Letters", "path": "/letters"},
+    {"endpoint": "events", "label": "Địa Điểm", "path": "/events"},
+    {"endpoint": "letters", "label": "Thư", "path": "/letters"},
 ]
 
 
@@ -111,12 +113,17 @@ def photos():
         4: "Chỉ có chúng ta",
     }
 
+    custom_positions = {
+        51: "center 20%",
+    }
+
     photo_items = [
         {
             "image": f"img/photos/{i}.jpg",
             "caption": custom_captions.get(i, ""),
+            "position": custom_positions.get(i, "center")
         }
-        for i in range(1, 65)
+        for i in range(1, 66)
     ]
 
     return render_template(
@@ -129,12 +136,170 @@ def photos():
 
 @app.route("/videos")
 def videos():
-    return render_template("videos.html", page_title="Replaying")
+    # Format: (youtube_video_id, orientation, date, title, description)
+    # orientation: "vertical" (9:16 phone clip) or "horizontal" (16:9 widescreen)
+    raw_videos = [
+        ("f1lfO-0BDfs", "horizontal", "05/11/2023", "Mô hình trường cho cô Ly."),
+        ("wVJPXL8hokQ", "horizontal", "12/12/2023", "Ngồi học ở Circle K Gia Thụy buồn ngủ vl."),
+        ("yfAOhvoB2mo", "horizontal", "21/12/2023", "Xem lại ngại ghê=)))"),
+        # ("wlz-3X2ehEQ", "horizontal", "20/11/2026", "Quay quá đẹp."),
+        ("iuwGS3F9jfA", "horizontal", "29/07/2024", "Lần đầu thì phải=)))"),
+        ("P09cFp5T96k", "horizontal", "23/08/2024", "Có lần đầu thì có lần 2=))"),
+        # ("wlz-3X2ehEQ", "horizontal", "20/11/2026", "Quay quá đẹp."),
+        ("eZSoS9msm2w", "horizontal", "24/11/2024", "Xong 1 năm."),
+        ("2Fl-n5agTLc", "horizontal", "04/09/2025", "Chiếc áo yêu thích, mà chật r."),
+        ("hSTOaZQej98", "horizontal", "20/02/2025", "Ảnh đẹp vl toàn lấy làm avt."),
+        ("VcAdPgCaMPE", "horizontal", "07/04/2025", "Matcha latte kem muối ngon."),
+        ("XwKOItjBXtI", "horizontal", "29/07/2025", "Lắp k lắp cứ ngồi chơi iPad."),
+        ("JJrg-xbFKzM", "horizontal", "01/11/2026", "Mặc áo chị Hạnh=)) ngắn vl."),
+        ("wlz-3X2ehEQ", "horizontal", "20/11/2026", "Quay quá đẹp."),
+
+        ("mIdSdQW-UFQ", "vertical", "K nhớ ngày nào", "=)))))"),
+        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
+        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
+        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
+        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
+        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
+    ]
+
+    all_videos = [
+        {
+            "number": f"#{idx:02d}",
+            "orientation": orientation,
+            "date": date,
+            "title": get_title(vid_id),
+            "description": desc,
+            "type": "embed",
+            "src": f"https://www.youtube.com/embed/{vid_id}",
+            "poster": f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg",
+        }
+        for idx, (vid_id, orientation, date, desc) in enumerate(raw_videos, start=1)
+    ]
+
+    horizontal_videos = [v for v in all_videos if v["orientation"] == "horizontal"]
+    vertical_videos = [v for v in all_videos if v["orientation"] == "vertical"]
+
+    return render_template(
+        "videos.html",
+        page_title="Replaying",
+        horizontal_videos=horizontal_videos,
+        vertical_videos=vertical_videos,
+        total_count=len(all_videos),
+    )
 
 
 @app.route("/events")
 def events():
-    return render_template("events.html", page_title="Places")
+    milestones = [
+        {
+            "number": "01",
+            "location": "Bồ Đề",
+            "title": "Bánh tráng Khánh Bếu",
+            "image": "img/events/khanhbeu.jpg",
+        },
+        {
+            "number": "02",
+            "location": "Hà Nội",
+            "title": "Circle K",
+            "image": "img/events/cck.jpg",
+        },
+        {
+            "number": "03",
+            "location": "Tình Quang",
+            "title": "Nhà Ngân",
+            "image": "img/events/nhangan.jpg",
+        },
+        {
+            "number": "04",
+            "location": "Hà Nội",
+            "title": "Mixue",
+            "image": "img/events/mixue.jpg",
+        },
+        {
+            "number": "05",
+            "location": "THPT Nguyễn Gia Thiều",
+            "title": "Trường",
+            "image": "img/events/c3.jpg",
+        },
+        {
+            "number": "06",
+            "location": "Gia Thụy",
+            "title": "Tượng đài Gia Thụy",
+            "image": "img/events/tuongdaigthuy.jpg",
+        },
+        {
+            "number": "07",
+            "location": "Tràng Tiền",
+            "title": "Bảo tàng Lịch sử Quốc Gia",
+            "image": "img/events/baotanglsqg.jpg",
+        },
+        {
+            "number": "08",
+            "location": "Ngọc Thụy",
+            "title": "Công viên Ngọc Thụy",
+            "image": "img/events/cvienngocthuy.jpg",
+        },
+        {
+            "number": "09",
+            "location": "Ngọc Thụy",
+            "title": "Dưới nhà Kiệt",
+            "image": "img/events/cotdien.jpg",
+        },
+        {
+            "number": "10",
+            "location": "Long Biên",
+            "title": "AEON Mall Long Biên",
+            "image": "img/events/aeon.jpg",
+        },
+        {
+            "number": "11",
+            "location": "Ngọc Thụy",
+            "title": "Đê Ngọc Thụy",
+            "image": "img/events/dengocthuy.jpg",
+        },
+        {
+            "number": "12",
+            "location": "Thái Nguyên",
+            "title": "Thái Hải",
+            "image": "img/events/thaihai.jpg",
+        },
+        {
+            "number": "13",
+            "location": "Tây Hồ",
+            "title": "Buffet Sen Tây Hồ",
+            "image": "img/events/sentayho.jpg",
+        },
+        {
+            "number": "14",
+            "location": "Hà Nội",
+            "title": "Photobooth (Nhiều lắm)",
+            "image": "img/events/ptb.jpg",
+        },
+        {
+            "number": "15",
+            "location": "Hai Bà Trưng",
+            "title": "The Coffee House",
+            "image": "img/events/thecoffeehouse.jpg",
+        },
+        {
+            "number": "16",
+            "location": "Mai Châu",
+            "title": "Bản Lác",
+            "image": "img/events/banlac.jpg",
+        },
+        {
+            "number": "17",
+            "location": "Giảng Võ",
+            "title": "Umai29",
+            "image": "img/events/umai29.jpg",
+        },
+    ]
+
+    return render_template(
+        "events.html",
+        page_title="Places",
+        milestones=milestones,
+    )
 
 
 @app.route("/letters", methods=["GET", "POST"])
@@ -142,13 +307,19 @@ def letters():
     error = None
 
     if request.method == "POST":
-        answer = request.form.get("answer", "").strip().casefold()
+        data = request.get_json(silent=True) or request.form
+        answer = (data.get("answer") or "").strip().casefold()
         expected_answer = LETTERS_ANSWER.strip().casefold()
 
-        if hmac.compare_digest(answer, expected_answer):
+        if expected_answer and hmac.compare_digest(answer, expected_answer):
             session["letters_unlocked"] = True
         else:
             error = "Thế thì chịu."
+
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            if session.get("letters_unlocked"):
+                return jsonify({"unlocked": True})
+            return jsonify({"unlocked": False, "error": error}), 400
 
     return render_template(
         "letters.html",

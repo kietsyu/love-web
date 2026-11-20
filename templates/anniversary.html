@@ -38,13 +38,12 @@
   <section class="story-layout page-shell">
     <div class="fav-print-frame">
       <div class="placeholder-media fav-print-inner"
-           data-lightbox-src="{{ url_for('static', filename='img/anni1/fav.jpg') }}"
-           data-lightbox-caption="Năm nhất — Khoảnh khắc đáng nhớ nhất">
+           data-lightbox-src="{{ url_for('static', filename='img/anni1/fav.jpg') }}">
         <img src="{{ url_for('static', filename='img/anni1/fav.jpg') }}" alt="Photo of the first" loading="lazy">
       </div>
       <div class="fav-print-caption">
         <span>★ Kỷ niệm đáng nhớ nhất</span>
-        <span>Năm 01</span>
+        <span>Năm 1</span>
       </div>
     </div>
 
@@ -71,8 +70,7 @@
         {% for photo in gallery %}
           <figure class="editorial-card">
             <div class="editorial-frame"
-                 data-lightbox-src="{{ url_for('static', filename=photo.image) }}"
-                 data-lightbox-caption="{{ photo.caption or 'Khoảnh khắc #' ~ '%02d'|format(loop.index) }}">
+                 data-lightbox-src="{{ url_for('static', filename=photo.image) }}">
               <span class="print-index">No. {{ "%02d"|format(loop.index) }}</span>
               <img
                 src="{{ url_for('static', filename=photo.image) }}"
@@ -88,17 +86,6 @@
         {% endfor %}
       </div>
     </section>
-
-    <div class="gallery-lightbox" id="gallery-lightbox" aria-hidden="true" role="dialog">
-      <button class="lightbox-close" type="button" aria-label="Đóng ảnh">✕</button>
-      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Ảnh trước">←</button>
-      <figure class="lightbox-figure">
-        <img id="lightbox-img" src="" alt="">
-        <figcaption id="lightbox-caption"></figcaption>
-      </figure>
-      <button class="lightbox-nav lightbox-next" type="button" aria-label="Ảnh tiếp theo">→</button>
-    </div>
-    <script src="{{ url_for('static', filename='js/gallery-lightbox.js') }}" defer></script>
   {% endif %}
 {% endif %}
 

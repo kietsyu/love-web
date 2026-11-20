@@ -3,39 +3,75 @@
 {% block content %}
 <section class="page-intro page-shell">
   <p class="eyebrow">Dành cho "bạn"</p>
-  <h1>Những điều<br><em>tôi muốn nói.</em></h1>
-  <p class="intro-copy">A private-feeling corner of a public little website.</p>
+  <h1>Những điều <em>tôi muốn nói.</em></h1>
+  <p class="intro-copy">
+    Góc bí mật mà chỉ có bạn mới có thể mở khóa.
+  </p>
 </section>
-{% if letters_unlocked %}
-  <section class="letter page-shell">
-    <p class="story-label">Lá thư cho năm thứ ba</p>
-    <h2>Gửi "bạn",</h2>
-    <p>
-      Start writing here. Tell her what you remember, what you are grateful for,
-      and what you hope the next chapter brings.
-    </p>
-    <p>With love,<br>Your favorite person</p>
-  </section>
-{% else %}
-  <section class="letter-lock page-shell">
-    <div class="lock-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" role="img">
-        <rect x="5" y="10" width="14" height="10" rx="2"></rect>
-        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-      </svg>
-    </div>
-    <p class="story-label">A letter just for us</p>
-    <h2>Answer the question to open it.</h2>
-    <form class="unlock-form" method="post">
-      <label for="answer">{{ letters_question }}</label>
-      <div class="answer-row">
-        <input id="answer" name="answer" type="password" autocomplete="off" required autofocus>
-        <button class="button" type="submit">Unlock <span>→</span></button>
+
+<div class="page-shell" style="padding-bottom: 20px;">
+  {% if letters_unlocked %}
+    <section class="letter year-letter is-revealed" aria-label="Unlocked letter">
+      <p class="story-label">Lá thư cho năm thứ ba</p>
+      <h2>Gửi "bạn",</h2>
+      <p class="letter-content-anni2">
+        Start writing here. Tell her what you remember, what you are grateful for,
+        and what you hope the next chapter brings.
+      </p>
+      <p class="letter-signature">
+        With love,<br>
+        Your favorite person
+      </p>
+    </section>
+  {% else %}
+    <section class="letter-lock" id="letter-lock-box" aria-label="Locked letter">
+      <div class="lock-icon" id="lock-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path class="lock-shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
+          <rect x="4" y="11" width="16" height="10" rx="2.5" />
+          <circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none" />
+        </svg>
       </div>
-      {% if error %}
-        <p class="form-error" role="alert">{{ error }}</p>
-      {% endif %}
-    </form>
-  </section>
-{% endif %}
+
+      <p class="story-label">Bức thư chỉ dành cho "bạn"</p>
+      <h2>Trả lời câu hỏi để mở khóa.</h2>
+
+      <form class="unlock-form" id="letter-unlock-form" method="post" action="{{ url_for('letters') }}">
+        <label for="secret-answer">{{ letters_question }}</label>
+        <div class="answer-row">
+          <input
+            id="secret-answer"
+            name="answer"
+            type="text"
+            autocomplete="off"
+            required
+          >
+          <button class="button" type="submit">
+            Mở khóa <span>→</span>
+          </button>
+        </div>
+        <p class="form-error" id="unlock-error" role="alert" {% if not error %}hidden{% endif %}>
+          {{ error or "" }}
+        </p>
+      </form>
+    </section>
+
+    <div id="letter-reveal-slot" hidden>
+      <section class="letter year-letter is-revealed" aria-label="Unlocked letter">
+        <p class="story-label">Lá thư cho năm thứ ba</p>
+        <h2>Gửi "bạn",</h2>
+        <p class="letter-content-anni2">
+          Start writing here. Tell her what you remember, what you are grateful for,
+          and what you hope the next chapter brings.
+        </p>
+        <p class="letter-signature">
+          With love,<br>
+          Your favorite person
+        </p>
+      </section>
+    </div>
+  {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='js/letter-unlock.js') }}" defer></script>
 {% endblock %}
