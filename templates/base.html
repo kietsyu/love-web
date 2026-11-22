@@ -2,11 +2,14 @@
 <html lang="vi">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>{{ page_title }} · Us</title>
     <script>
       if (localStorage.getItem("theme") === "dark") {
         document.documentElement.setAttribute("data-theme", "dark");
+      }
+      if (localStorage.getItem("motion") !== "on") {
+        document.documentElement.setAttribute("data-motion", "off");
       }
     </script>
     <link rel="preconnect" href="https://googleapis.com">
@@ -87,6 +90,12 @@
         <button class="lightbox-nav lightbox-next" type="button" aria-label="Ảnh tiếp theo">&gt;</button>
       </div>
     </div>
+
+    <!-- Floating Bottom-Right Animation Toggle -->
+    <button class="theme-toggle motion-toggle" id="motion-toggle" type="button" aria-label="Bật / tắt hiệu ứng chuyển động" title="Bật / tắt hiệu ứng nền">
+      <span class="motion-icon-on" aria-hidden="true">✦</span>
+      <span class="motion-icon-off" aria-hidden="true">⏸</span>
+    </button>
 
     <!-- Floating Bottom-Right Dark Mode Toggle -->
     <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Chuyển giao diện sáng / tối" title="Chuyển chế độ sáng / tối">

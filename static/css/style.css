@@ -10,11 +10,24 @@
 
 * { box-sizing: border-box; }
 
+/* Matches header/footer color so overscroll bounce never shows a white gap */
+html {
+  background: var(--sage);
+  overscroll-behavior-y: none;
+}
+
 body {
-  margin: 0;
   background: var(--paper);
   color: var(--ink);
+  display: flex;
+  flex-direction: column;
   font-family: "Be Vietnam Pro", "DM Sans", sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
 }
 
 /* ==========================================================================
@@ -115,7 +128,7 @@ body {
   transform: translateY(-14px);
 }
 
-/* Default Top-Right Horizontal Pill Bar */
+/* Default Top-Right Horizontal Pill Bar — Anchored to the Header */
 .site-nav {
   align-items: center;
   background: #0d0f12;
@@ -127,7 +140,7 @@ body {
   gap: 4px;
   opacity: 1;
   padding: 6px 10px;
-  position: fixed;
+  position: absolute;
   right: max(5vw, calc((100vw - 1400px) / 2));
   top: 22px;
   transition: opacity 0.22s ease, transform 0.22s ease;
@@ -140,17 +153,18 @@ body {
   pointer-events: none;
 }
 
-/* Scrolled State: Taller Vertical Floating Dock on the Right Side */
+/* Scrolled State: Fixed Vertical Floating Dock on the Right Side */
 .site-nav.is-vertical {
   align-items: stretch;
   border-radius: 36px;
   flex-direction: column;
   gap: 14px;
   padding: 24px 10px;
+  position: fixed;
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-}
+} 
 
 .site-nav.is-vertical a {
   padding: 13px 16px;
@@ -1087,7 +1101,7 @@ figcaption { font-size: .8rem; padding-top: 13px; }
   overflow: hidden;
   pointer-events: none;
   position: fixed;
-  z-index: -1;
+  z-index: 0;
 }
 
 /* 1. Interactive Architectural Dot-Grid Canvas */
@@ -1095,8 +1109,6 @@ figcaption { font-size: .8rem; padding-top: 13px; }
   display: block;
   height: 100%;
   inset: 0;
-  mask-image: radial-gradient(ellipse 90% 90% at 50% 45%, #000 60%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 45%, #000 60%, transparent 100%);
   position: absolute;
   width: 100%;
 }
@@ -1105,9 +1117,8 @@ figcaption { font-size: .8rem; padding-top: 13px; }
 .ambient-orb {
   border-radius: 50%;
   filter: blur(55px);
-  mix-blend-mode: multiply;
   position: absolute;
-  will-change: transform;
+  transform: translateZ(0);
 }
 
 .orb-1 {
@@ -1181,12 +1192,10 @@ figcaption { font-size: .8rem; padding-top: 13px; }
 main {
   background: linear-gradient(
     135deg,
-    rgba(219, 238, 255, 0.32) 0%,
-    rgba(245, 247, 249, 0.18) 100%
+    rgba(235, 244, 252, 0.52) 0%,
+    rgba(245, 247, 249, 0.42) 100%
   );
-  backdrop-filter: blur(3.5px) saturate(135%);
-  -webkit-backdrop-filter: blur(2.5px) saturate(135%);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 28px;
   box-shadow:
     0 24px 60px rgba(26, 36, 48, 0.08),
@@ -1880,4 +1889,205 @@ main,
   color: #ffd97d;
   display: inline;
   text-shadow: 0 0 10px rgba(255, 217, 125, 0.75);
+}
+
+/* ==========================================================================
+   ANIMATION TOGGLE BUTTON & REDUCED-MOTION OVERRIDE
+   ========================================================================== */
+.motion-toggle {
+  right: 82px; /* Sits neatly to the left of the Dark Mode toggle */
+}
+
+.motion-icon-off {
+  display: none;
+}
+
+:root[data-motion="off"] .motion-icon-on {
+  display: none;
+}
+
+:root[data-motion="off"] .motion-icon-off {
+  color: #9eb0c4;
+  display: inline;
+  font-size: 0.95rem;
+}
+
+/* Freeze drifting orbs when user toggles animations off */
+:root[data-motion="off"] .ambient-orb {
+  animation: none !important;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE POLISH (CHROME MOBILE, GOOGLE APP & IOS SAFARI)
+   ========================================================================== */
+.gallery-lightbox {
+  height: 100dvh;
+}
+
+a,
+button,
+.video-stage,
+.polaroid-media,
+.editorial-frame,
+.timeline-polaroid {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 900px) {
+  /* Stack header logo cleanly above the single-row navigation pill */
+  .site-header {
+    align-items: center;
+    flex-direction: column;
+    gap: 12px;
+    min-height: auto;
+    padding: calc(14px + env(safe-area-inset-top)) 12px 14px;
+  }
+
+  /* Keep all 6 nav items on ONE single row (no wrapping into a tall oval) */
+  .site-nav,
+  .site-nav.is-vertical {
+    align-items: center;
+    border-radius: 999px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 2px;
+    max-width: calc(100vw - 16px);
+    overflow-x: auto;
+    padding: 5px 6px;
+    scrollbar-width: none;
+  }
+
+  .site-nav::-webkit-scrollbar,
+  .site-nav.is-vertical::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav {
+    left: auto;
+    margin: 0 auto;
+    position: relative;
+    right: auto;
+    top: auto;
+    width: fit-content;
+  }
+
+  .site-nav.is-vertical {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38);
+    left: 50%;
+    position: fixed;
+    right: auto;
+    top: calc(10px + env(safe-area-inset-top));
+    transform: translateX(-50%);
+    width: fit-content;
+  }
+
+  /* Compact link sizing so all 6 tabs fit cleanly on a 375px phone screen */
+  .site-nav a,
+  .site-nav.is-vertical a {
+    font-size: 0.72rem;
+    padding: 6px 9px;
+  }
+}
+
+@media (max-width: 700px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .site-nav a,
+  .site-nav.is-vertical a {
+    font-size: 0.68rem;
+    padding: 6px 7px;
+  }
+
+  .answer-row input {
+    font-size: 16px;
+  }
+
+  .hero {
+    padding-bottom: 64px;
+    padding-top: 56px;
+  }
+
+  .page-intro {
+    padding-bottom: 52px;
+    padding-top: 56px;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 11vw, 3.8rem);
+    line-height: 0.96;
+  }
+
+  .page-intro h1 {
+    font-size: clamp(2.4rem, 10.5vw, 3.6rem);
+  }
+
+  .gallery,
+  .year-gallery-section,
+  .media-list,
+  .yt-section,
+  .timeline {
+    overflow-x: clip;
+  }
+
+  /* Ensure both floating Liquid Glass toggles stay visible in bottom-right */
+  .theme-toggle,
+  .motion-toggle {
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    display: flex;
+    height: 42px;
+    position: fixed;
+    width: 42px;
+    z-index: 60;
+  }
+
+  .theme-toggle {
+    right: 14px;
+  }
+
+  .motion-toggle {
+    right: 64px;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px 20px calc(76px + env(safe-area-inset-bottom));
+    text-align: center;
+  }
+
+  .lightbox-panel {
+    height: 82dvh;
+    padding: 44px 16px 24px;
+    width: 94vw;
+  }
+
+  .lightbox-figure img {
+    border-width: 3px;
+    max-height: calc(82dvh - 110px);
+    max-width: calc(94vw - 36px);
+  }
+
+  .lightbox-close {
+    right: 10px;
+    top: 8px;
+  }
+
+  .lightbox-nav {
+    background: rgba(13, 15, 18, 0.55);
+    border-radius: 50%;
+    font-size: 1.4rem;
+    padding: 10px 14px;
+  }
+
+  .lightbox-prev {
+    left: 8px;
+  }
+
+  .lightbox-next {
+    right: 8px;
+  }
 }

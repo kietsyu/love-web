@@ -1,41 +1,43 @@
 /* ==========================================================================
-   INTERACTIVE WATER-WAVE, CURSOR-RIPPLE & SPARKLES BACKGROUND
+   HIGH-FPS WATER-WAVE, CURSOR-RIPPLE & SPARKLES BACKGROUND (WITH TOGGLE)
    ========================================================================== */
 (() => {
   const canvas = document.getElementById("ambient-dot-canvas");
   if (!canvas) return;
 
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const isLowPower = (navigator.hardwareConcurrency || 4) <= 4;
-  const ctx = canvas.getContext("2d");
+  const systemReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ctx = canvas.getContext("2d", { alpha: true });
 
-  // --- Easy-to-tweak decoration settings ---
   const CONFIG = {
-    spacing: isLowPower ? 28 : 22,         // Distance between dots (px)
-    dotRadius: 1.6,                        // Base size of each dot (px)
-    dotColor: "rgba(37, 54, 74, 0.42)",    // Coastal Blue ink tone (light mode)
-    sparkleCount: isLowPower ? 14 : 22,    // Number of floating sparkles
-    sparkleColor: "rgba(37, 54, 74, 1)",   // Sparkle ink color (light mode)
-    sparkleGlyphs: ["✦", "✧", "·"],        // Sparkle characters
-    repelRadius: 230,                      // Direct cursor push zone (px)
-    repelStrength: 14,                     // Direct cursor push distance (px)
-    springEase: 0.14,                      // How smoothly dots spring back
-    waveAmplitude: 5.0,                    // Ambient water drift height (px)
-    waveSpeed: 0.002,                      // Ambient water drift speed
-    rippleMaxRadius: 600,                  // How far cursor wake waves expand (px)
-    rippleSpeed: 5.3,                      // Expansion speed of cursor waves (px/frame)
-    rippleBand: 45,                        // Thickness of each wave crest (px)
-    rippleStrength: 28,                    // Push height of expanding wave crests (px)
-    maxRipples: isLowPower ? 8 : 14,       // Cap active ripples for steady 60fps
+    spacing: 27,                           // Clean spacing (~40% fewer vertices, smoother FPS)
+    dotSize: 2.6,                          // Crisp dot diameter (px)
+    dotColor: "rgba(37, 54, 74, 0.42)",
+    sparkleCount: 11,
+    sparkleColor: "rgba(37, 54, 74, 1)",
+    sparkleGlyphs: ["✦", "✧", "·"],
+    repelRadius: 130,
+    repelStrength: 10,
+    springEase: 0.14,
+    waveAmplitude: 2.0,
+    waveSpeed: 0.002,
+    rippleMaxRadius: 350,
+    rippleSpeed: 5.3,
+    rippleBand: 25,
+    rippleStrength: 20,
+    maxRipples: 5,
   };
 
   let width = 0;
   let height = 0;
-  let dpr = 1;
   let dots = [];
   let sparkles = [];
   let ripples = [];
+  let rafId = null;
   const mouse = { x: -9999, y: -9999, lastSpawnX: -9999, lastSpawnY: -9999 };
+
+  function isMotionDisabled() {
+    return systemReducedMotion || document.documentElement.getAttribute("data-motion") === "off";
+  }
 
   function createSparkle(randomY = true) {
     const glyph = CONFIG.sparkleGlyphs[Math.floor(Math.random() * CONFIG.sparkleGlyphs.length)];
@@ -59,7 +61,8 @@
   }
 
   function buildScene() {
-    dpr = isLowPower ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+    // Cap DPR at 1.25 so Retina/4K screens don't multiply pixel fill cost by 4x
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     width = window.innerWidth;
     height = window.innerHeight;
 
@@ -67,7 +70,6 @@
     canvas.height = Math.floor(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // 1. Build Dot Grid
     dots = [];
     const cols = Math.ceil(width / CONFIG.spacing) + 1;
     const rows = Math.ceil(height / CONFIG.spacing) + 1;
@@ -82,7 +84,6 @@
       }
     }
 
-    // 2. Build Floating Sparkles
     sparkles = [];
     for (let i = 0; i < CONFIG.sparkleCount; i++) {
       const s = createSparkle(true);
@@ -90,10 +91,30 @@
       s.y = s.baseY;
       sparkles.push(s);
     }
+
+    if (isMotionDisabled()) {
+      drawStaticFrame();
+    }
+  }
+
+  function drawStaticFrame() {
+    ctx.clearRect(0, 0, width, height);
+    const isDark = document.documentElement.dataset.theme === "dark";
+    ctx.fillStyle = isDark ? "rgba(191, 208, 222, 0.35)" : CONFIG.dotColor;
+
+    const half = CONFIG.dotSize * 0.5;
+    ctx.beginPath();
+    for (let i = 0; i < dots.length; i++) {
+      const dot = dots[i];
+      dot.x = dot.homeX;
+      dot.y = dot.homeY;
+      ctx.rect(dot.homeX - half, dot.homeY - half, CONFIG.dotSize, CONFIG.dotSize);
+    }
+    ctx.fill();
   }
 
   function spawnRipple(x, y, strengthMultiplier = 1) {
-    if (prefersReducedMotion) return;
+    if (isMotionDisabled()) return;
     ripples.push({
       x,
       y,
@@ -105,14 +126,10 @@
     }
   }
 
-  // Shared cursor-repulsion + wake-ripple displacement calculator
   function getInteractiveOffset(originX, originY, multiplier = 1) {
     let pushX = 0;
     let pushY = 0;
 
-    if (prefersReducedMotion) return { pushX, pushY };
-
-    // A. Direct cursor repulsion
     const dx = originX - mouse.x;
     const dy = originY - mouse.y;
     const distSq = dx * dx + dy * dy;
@@ -125,7 +142,6 @@
       pushY += (dy / dist) * force;
     }
 
-    // B. Expanding water wake ripples
     for (let k = 0; k < ripples.length; k++) {
       const rip = ripples[k];
       const rdx = originX - rip.x;
@@ -150,20 +166,24 @@
   }
 
   function render(time = 0) {
+    if (isMotionDisabled()) {
+      rafId = null;
+      drawStaticFrame();
+      return;
+    }
+
     if (document.hidden) {
-      requestAnimationFrame(render);
+      rafId = requestAnimationFrame(render);
       return;
     }
 
     ctx.clearRect(0, 0, width, height);
     const t = time * CONFIG.waveSpeed;
 
-    // Automatically switch dot & sparkle colors for Dark Mode
     const isDark = document.documentElement.dataset.theme === "dark";
-    const activeDotColor = isDark ? "rgba(191, 208, 222, 0.5)" : CONFIG.dotColor;
-    const activeSparkleColor = isDark ? "rgba(255, 255, 255, 0.85)" : CONFIG.sparkleColor;
+    const activeDotColor = isDark ? "rgba(191, 208, 222, 0.35)" : CONFIG.dotColor;
+    const activeSparkleColor = isDark ? "rgba(238, 243, 248, 0.85)" : CONFIG.sparkleColor;
 
-    // Advance & prune ripples
     for (let k = ripples.length - 1; k >= 0; k--) {
       ripples[k].radius += CONFIG.rippleSpeed;
       if (ripples[k].radius > CONFIG.rippleMaxRadius) {
@@ -171,46 +191,42 @@
       }
     }
 
-    // --- 1. Render Interactive Water-Wave Dots ---
+    // --- 1. Single-Batch Dot Rendering (1 GPU fill call instead of 3,000+) ---
     ctx.fillStyle = activeDotColor;
+    const half = CONFIG.dotSize * 0.5;
+    ctx.beginPath();
+
     for (let i = 0; i < dots.length; i++) {
       const dot = dots[i];
-      let targetX = dot.homeX;
-      let targetY = dot.homeY;
+      let targetX = dot.homeX
+        + Math.sin(dot.homeY * 0.014 + t) * CONFIG.waveAmplitude
+        + Math.cos((dot.homeX + dot.homeY) * 0.008 - t * 0.8) * (CONFIG.waveAmplitude * 0.5);
+      let targetY = dot.homeY
+        + Math.cos(dot.homeX * 0.014 + t * 0.9) * CONFIG.waveAmplitude
+        + Math.sin((dot.homeX - dot.homeY) * 0.008 + t * 0.7) * (CONFIG.waveAmplitude * 0.5);
 
-      if (!prefersReducedMotion) {
-        targetX += Math.sin(dot.homeY * 0.014 + t) * CONFIG.waveAmplitude
-                 + Math.cos((dot.homeX + dot.homeY) * 0.008 - t * 0.8) * (CONFIG.waveAmplitude * 0.5);
-        targetY += Math.cos(dot.homeX * 0.014 + t * 0.9) * CONFIG.waveAmplitude
-                 + Math.sin((dot.homeX - dot.homeY) * 0.008 + t * 0.7) * (CONFIG.waveAmplitude * 0.5);
-
-        const { pushX, pushY } = getInteractiveOffset(targetX, targetY, 1);
-        targetX += pushX;
-        targetY += pushY;
-      }
+      const { pushX, pushY } = getInteractiveOffset(targetX, targetY, 1);
+      targetX += pushX;
+      targetY += pushY;
 
       dot.x += (targetX - dot.x) * CONFIG.springEase;
       dot.y += (targetY - dot.y) * CONFIG.springEase;
 
-      ctx.beginPath();
-      ctx.arc(dot.x, dot.y, CONFIG.dotRadius, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.rect(dot.x - half, dot.y - half, CONFIG.dotSize, CONFIG.dotSize);
     }
+    ctx.fill();
 
-    // --- 2. Render Interactive Floating Sparkles ---
+    // --- 2. Render Floating Sparkles ---
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
     for (let i = 0; i < sparkles.length; i++) {
       const s = sparkles[i];
+      s.baseY -= s.speedY;
+      s.rotation += s.rotSpeed;
 
-      if (!prefersReducedMotion) {
-        s.baseY -= s.speedY;
-        s.rotation += s.rotSpeed;
-
-        if (s.baseY < -30) {
-          Object.assign(s, createSparkle(false));
-        }
+      if (s.baseY < -30) {
+        Object.assign(s, createSparkle(false));
       }
 
       const naturalX = s.baseX + Math.sin(time * s.swayFreq + s.phase) * s.swayAmp;
@@ -236,10 +252,31 @@
       ctx.restore();
     }
 
-    requestAnimationFrame(render);
+    rafId = requestAnimationFrame(render);
   }
 
+  function startOrStopLoop() {
+    if (isMotionDisabled()) {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      ripples = [];
+      drawStaticFrame();
+    } else if (!rafId) {
+      rafId = requestAnimationFrame(render);
+    }
+  }
+
+  window.addEventListener("motion-preference-changed", startOrStopLoop);
+
+  // Also redraw static frame immediately if theme changes while motion is off
+  document.getElementById("theme-toggle")?.addEventListener("click", () => {
+    if (isMotionDisabled()) requestAnimationFrame(drawStaticFrame);
+  });
+
   window.addEventListener("mousemove", (e) => {
+    if (isMotionDisabled()) return;
     mouse.x = e.clientX;
     mouse.y = e.clientY;
 
@@ -271,5 +308,5 @@
   });
 
   buildScene();
-  requestAnimationFrame(render);
+  startOrStopLoop();
 })();
