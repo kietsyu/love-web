@@ -155,11 +155,14 @@ def videos():
         ("wlz-3X2ehEQ", "horizontal", "20/11/2026", "Quay quá đẹp."),
 
         ("mIdSdQW-UFQ", "vertical", "K nhớ ngày nào", "=)))))"),
-        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
-        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
-        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
-        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
-        # ("wlz-3X2ehEQ", "vertical", "20/11/2026", "Quay quá đẹp."),
+        ("T_R53DdN-a4", "vertical", "k nhớ ngày nào", "c u t e"),
+        ("g4XIRe1nizY", "vertical", "K nhớ ngày nào", "Bún trộn ở quán bún ngan thì phải."),
+        ("qoOg_Mojako", "vertical", "04/11/2023", "Công viên Long Biên."),
+        ("Ew1vEGFV5dc", "vertical", "09/01/2024", "Tập văn nghệ ở trường, hình như chuyên đề."),
+        ("IZ6uBMWEA6o", "vertical", "K nhớ ngày nào", "Vẫn đang tập văn nghệ."),
+        ("ir5BVAj8Vg0", "vertical", "14/06/2024", "Thích phết=))"),
+        ("FMp_q5sT0o0", "vertical", "19/09/2024", "Dỗi rất nhiều!"),
+        ("u0Qg4HmatPc", "vertical", "K nhớ thì chịu", "Sinh nhật Kiet."),
     ]
 
     all_videos = [
