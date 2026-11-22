@@ -1,9 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% set letter_content %}
+  <section class="letter year-letter is-revealed" aria-label="Unlocked letter">
+    <p class="story-label">Lá thư cho năm thứ ba</p>
+    <h2>Gửi "bạn",</h2>
+    <p class="letter-content-anni2">
+      Vậy là 365 ngày nữa lại trôi qua, chúng ta đã chính thức yêu nhau được 3 năm rồi.
+      Đây là một quãng thời gian rất dài, và anh nghĩ nó đã đủ để chứng minh tình cảm của
+      chúng ta dành cho nhau rất chân thành. Năm nay, cả hai ta đã đạt được rất nhiều cột
+      mốc mới và đáng tự hào, cùng nhau. Chúng ta chính thức cầm tay nhau bước qua cấp 3,
+      đỗ được vào ngôi trường đại học cùng ngành học mong muốn của mình. Đây là bước đệm
+      rất quan trọng đối với quá trình trưởng thành của cả hai.<br><br>Tuy nhiên trong một năm vừa qua,
+      những điều tốt đẹp cũng không phải là thứ duy nhất đến với ta. Cũng có những
+      biến cố, hay có thể nói rằng, có những bước ngoặt lớn đối với cuộc đời của ta và cũng
+      phần nào gây ảnh hưởng đến mối quan hệ của mình. Nhưng mong rằng, chúng ta sẽ học được
+      cách nhìn nhận thế giới và nâng cao nhận thức của bản thân để từ đó xây dựng một phiên bản
+      hoàn thiện hơn, trưởng thành hơn của chính mình sau mỗi khó khăn.<br><br>Tình cảm của
+      hai đứa dành cho nhau là thật, nhưng chúng ta mỗi người sinh ra trong một gia đình
+      với hoàn cảnh khác nhau, môi trường học tập và lớn lên trong mỗi gia đình của cả hai
+      là khác nhau. Vì vậy, chắc chắn trong tương lai cả hai sẽ nhìn thấy nhau với những
+      quan điểm khác nhau trong nhiều vấn đề. Cũng có thể sau này, dần dần khi được tiếp cận
+      những kiến thức mới ngoài kia, chúng ta sẽ cảm thấy không còn chung một mục tiêu, không còn
+      chung một đích đến nữa. Nếu quả thật có chuyện đó xảy ra, anh mong rằng cả hai ta sẽ
+      nhìn nhận một cách tỉnh táo, suy nghĩ thật kỹ và đưa ra quyết định mà mình nghĩ rằng sẽ
+      <i>tốt nhất cho tương lai của chính bản thân mình</i>. Anh không nhận anh là người biết tất cả
+      mọi thứ trên đời, nhưng anh nghĩ là anh đã chứng kiến đủ nhiều để viết ra lời vừa xong.
+      Khi nghĩ về tương lai, anh mong bé hãy <i>luôn đặt bản thân mình lên đầu</i>. Đừng vì lời
+      bàn tán hay tiếc nuối về những điều trong quá khứ ảnh hưởng đến quyết định quan trọng về
+      tương lai của bản thân mình, <i>kể cả khi đó là anh</i>.<br><br>Nghe anh nói những lời này
+      có thể bé sẽ thấy hơi buồn, hụt hẫng, thậm chí là có chút thất vọng, nhưng bé phải tin anh.
+      Chúng ta đã đến thời điểm mà sẽ phải đưa ra các quyết định mà sau này có thể gây ảnh hưởng rất
+      lớn đến tương lai của bản thân, vì vậy ta phải luôn tỉnh táo trong mọi trường hợp, phải
+      phân tích vấn đề và hành động như một người trưởng thành, và quan trọng nhất: Hãy ưu tiên
+      bản thân. Đây là những điều mà anh sẽ nói với những người quan trọng nhất đối với anh.<br><br>
+      Hôm nay là ngày kỷ niệm ba năm của chúng ta, chúc cho tình yêu của mình luôn được bền lâu, chúc
+      cho cả hai luôn được hạnh phúc và chúc cho cả hai sẽ luôn thành công với mọi mục tiêu của
+      bản thân. Hy vọng là ngày này những năm sau anh vẫn có thể nhắn những lời này với bé. ♥
+    </p>
+    <p class="letter-signature">
+      With love,<br>
+      Your favorite person
+    </p>
+  </section>
+{% endset %}
+
 <section class="page-intro page-shell">
   <p class="eyebrow">Dành cho "bạn"</p>
-  <h1>Những điều<br><em>tôi muốn nói.</em></h1>
+  <h1>Những điều <em>tôi muốn nói.</em></h1>
   <p class="intro-copy">
     Góc bí mật mà chỉ có bạn mới có thể mở khóa.
   </p>
@@ -11,47 +55,7 @@
 
 <div class="page-shell" style="padding-bottom: 20px;">
   {% if letters_unlocked %}
-    <section class="letter year-letter is-revealed" aria-label="Unlocked letter">
-      <p class="story-label">Lá thư cho năm thứ ba</p>
-      <h2>Gửi "bạn",</h2>
-      <p class="letter-content-anni2">
-        Vậy là 365 ngày nữa lại trôi qua, chúng ta đã chính thức yêu nhau được 3 năm rồi.
-        Đây là một quãng thời gian rất dài, và anh nghĩ nó đã đủ để chứng minh tình cảm của
-        chúng ta dành cho nhau rất chân thành. Năm nay, cả hai ta đã đạt được rất nhiều cột
-        mốc mới và đáng tự hào, cùng nhau. Chúng ta chính thức cầm tay nhau bước qua cấp 3,
-        đỗ được vào ngôi trường đại học cùng ngành học mong muốn của mình. Đây là bước đệm
-        rất quan trọng đối với quá trình trưởng thành của cả hai.<br><br>Tuy nhiên trong một năm vừa qua,
-        những điều tốt đẹp cũng không phải là thứ duy nhất đến với ta. Cũng có những
-        biến cố, hay có thể nói rằng, có những bước ngoặt lớn đối với cuộc đời của ta và cũng
-        phần nào gây ảnh hưởng đến mối quan hệ của mình. Nhưng mong rằng, chúng ta sẽ học được
-        cách nhìn nhận thế giới và nâng cao nhận thức của bản thân để từ đó xây dựng một phiên bản
-        hoàn thiện hơn, trưởng thành hơn của chính mình sau mỗi khó khăn.<br><br>Tình cảm của
-        hai đứa dành cho nhau là thật, nhưng chúng ta mỗi người sinh ra trong một gia đình
-        với hoàn cảnh khác nhau, môi trường học tập và lớn lên trong mỗi gia đình của cả hai
-        là khác nhau. Vì vậy, chắc chắn trong tương lai cả hai sẽ nhìn thấy nhau với những
-        quan điểm khác nhau trong nhiều vấn đề. Cũng có thể sau này, dần dần khi được tiếp cận
-        những kiến thức mới ngoài kia, chúng ta sẽ cảm thấy không còn chung một mục tiêu, không còn
-        chung một đích đến nữa. Nếu quả thật có chuyện đó xảy ra, anh mong rằng cả hai ta sẽ
-        nhìn nhận một cách tỉnh táo, suy nghĩ thật kỹ và đưa ra quyết định mà mình nghĩ rằng sẽ
-        <i>tốt nhất cho tương lai của chính bản thân mình</i>. Anh không nhận anh là người biết tất cả
-        mọi thứ trên đời, nhưng anh nghĩ là anh đã chứng kiến đủ nhiều để viết ra lời vừa xong.
-        Khi nghĩ về tương lai, anh mong bé hãy <i>luôn đặt bản thân mình lên đầu</i>. Đừng vì lời
-        bàn tán hay tiếc nuối về những điều trong quá khứ ảnh hưởng đến quyết định quan trọng về
-        tương lai của bản thân mình, <i>kể cả khi đó là anh</i>.<br><br>Nghe anh nói những lời này
-        có thể bé sẽ thấy hơi buồn, hụt hẫng, thậm chí là có chút thất vọng, nhưng bé phải tin anh.
-        Chúng ta đã đến thời điểm mà sẽ phải đưa ra các quyết định mà sau này có thể gây ảnh hưởng rất
-        lớn đến tương lai của bản thân, vì vậy ta phải luôn tỉnh táo trong mọi trường hợp, phải
-        phân tích vấn đề và hành động như một người trưởng thành, và quan trọng nhất: Hãy ưu tiên
-        bản thân. Đây là những điều mà anh sẽ nói với những người quan trọng nhất đối với anh.<br><br>
-        Hôm nay là ngày kỷ niệm ba năm của chúng ta, chúc cho tình yêu của mình luôn được bền lâu, chúc
-        cho cả hai luôn được hạnh phúc và chúc cho cả hai sẽ luôn thành công với mọi mục tiêu của
-        bản thân. Hy vọng là ngày này những năm sau anh vẫn có thể nhắn những lời này với bé. ♥
-      </p>
-      <p class="letter-signature">
-        With love,<br>
-        Người yêu thích của bé=)))
-      </p>
-    </section>
+    {{ letter_content }}
   {% else %}
     <section class="letter-lock" id="letter-lock-box" aria-label="Locked letter">
       <div class="lock-icon" id="lock-icon" aria-hidden="true">
@@ -86,17 +90,7 @@
     </section>
 
     <div id="letter-reveal-slot" hidden>
-      <section class="letter year-letter is-revealed" aria-label="Unlocked letter">
-        <p class="story-label">Lá thư cho năm thứ ba</p>
-        <h2>Gửi "bạn",</h2>
-        <p class="letter-content-anni2">
-          Vậy là một năm nữa lại trôi qua, chúng ta đã chính thức yêu nhau được 3 năm rồi.
-        </p>
-        <p class="letter-signature">
-          With love,<br>
-          Your favorite person
-        </p>
-      </section>
+      {{ letter_content }}
     </div>
   {% endif %}
 </div>
