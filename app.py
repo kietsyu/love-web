@@ -160,6 +160,7 @@ def videos():
         ("qoOg_Mojako", "vertical", "04/11/2023", "Công viên Long Biên."),
         ("Ew1vEGFV5dc", "vertical", "09/01/2024", "Tập văn nghệ ở trường, hình như chuyên đề."),
         ("IZ6uBMWEA6o", "vertical", "K nhớ ngày nào", "Vẫn đang tập văn nghệ."),
+        ("Ho1doeSQg2Q", "vertical", "23/05/2024", "lần đầu đi bonding"),
         ("ir5BVAj8Vg0", "vertical", "14/06/2024", "Thích phết=))"),
         ("FMp_q5sT0o0", "vertical", "19/09/2024", "Dỗi rất nhiều!"),
         ("u0Qg4HmatPc", "vertical", "K nhớ thì chịu", "Sinh nhật Kiet."),

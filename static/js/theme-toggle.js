@@ -26,8 +26,28 @@
         document.documentElement.setAttribute("data-motion", "off");
         localStorage.setItem("motion", "off");
       }
-      // Notify ambient-grid.js immediately
       window.dispatchEvent(new Event("motion-preference-changed"));
     });
   }
+
+  // 3. Keep Floating Toggle Buttons Parked Above the Footer at Bottom of Page
+  const footer = document.querySelector(".site-footer");
+  const toggles = [themeBtn, motionBtn].filter(Boolean);
+
+  function updateToggleOffset() {
+    if (!footer || toggles.length === 0) return;
+
+    const baseGap = window.innerWidth <= 700 ? 16 : 24;
+    const footerRect = footer.getBoundingClientRect();
+    const visibleFooterHeight = Math.max(0, window.innerHeight - footerRect.top);
+    const nextBottom = visibleFooterHeight > 0 ? visibleFooterHeight + 14 : baseGap;
+
+    toggles.forEach((btn) => {
+      btn.style.bottom = `${nextBottom}px`;
+    });
+  }
+
+  updateToggleOffset();
+  window.addEventListener("scroll", updateToggleOffset, { passive: true });
+  window.addEventListener("resize", updateToggleOffset);
 })();
